@@ -2,12 +2,9 @@ const btn_agregar_ejercicio = document.getElementById("btn-agregar-ejercicio");
 const txt_agregarEjercico = document.getElementById("txt-agregar-ejercicio");
 const lista_ejercicios = document.getElementById("exerciseList");
 
-// Cargar ejercicios guardados al inicio
-let ejercicios = cargarEjercicios(); // función que definiremos abajo
+let ejercicios = []; // array en memoria
 
-// Mostrar ejercicios guardados en la lista al cargar la página
-ejercicios.forEach(ej => agregarEj_a_Lista(ej));
-
+// Función para mostrar ejercicio en la lista HTML
 function agregarEj_a_Lista(nombre) {
     const li = document.createElement("li");
     li.textContent = nombre;
@@ -16,7 +13,7 @@ function agregarEj_a_Lista(nombre) {
 }
 
 // Función para guardar el array en localStorage
-function guardarEjercicios(ejercicios) {
+function guardarEjercicios() {
     localStorage.setItem('ejercicios', JSON.stringify(ejercicios));
 }
 
@@ -26,14 +23,20 @@ function cargarEjercicios() {
     return guardados ? JSON.parse(guardados) : [];
 }
 
+// Al cargar la página, cargar y mostrar los ejercicios guardados
+window.onload = function() {
+    ejercicios = cargarEjercicios();
+    ejercicios.forEach(ej => agregarEj_a_Lista(ej));
+}
+
+// Evento para agregar ejercicio nuevo
 btn_agregar_ejercicio.addEventListener("click", () => {
     let nomEjercicio = txt_agregarEjercico.value.trim();
-    if (nomEjercicio === "") return; // Evita agregar vacío
+    if (nomEjercicio === "") return; // no agregar vacío
 
-    agregarEj_a_Lista(nomEjercicio);
+    ejercicios.push(nomEjercicio);   // añadir a array en memoria
+    guardarEjercicios();              // guardar en localStorage
+    agregarEj_a_Lista(nomEjercicio); // mostrar en pantalla
 
-    ejercicios.push(nomEjercicio);       // Agregar al array en memoria
-    guardarEjercicios(ejercicios);       // Guardar array actualizado en localStorage
-
-    txt_agregarEjercico.value = "";      // Limpiar input
+    txt_agregarEjercico.value = "";  // limpiar input
 });
