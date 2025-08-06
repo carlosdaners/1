@@ -1,0 +1,114 @@
+/* Gym Tracker - Estilos personalizados para una experiencia moderna y atractiva */
+
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+    min-height: 100vh;
+}
+
+h1, h2, h5 {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 700;
+    color: #3b3b3b;
+}
+
+.nav-tabs {
+    border-bottom: 2px solid #6366f1;
+}
+.nav-tabs .nav-link.active {
+    background: #6366f1;
+    color: #fff !important;
+    border-radius: 8px 8px 0 0;
+    font-weight: 600;
+}
+.nav-tabs .nav-link {
+    color: #6366f1;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+.nav-tabs .nav-link:hover {
+    background: #e0e7ff;
+}
+
+.card {
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(99,102,241,0.08);
+    border: none;
+    transition: box-shadow 0.2s;
+}
+.card:hover {
+    box-shadow: 0 8px 32px rgba(99,102,241,0.18);
+}
+
+.btn-primary, .btn-success {
+    background: linear-gradient(90deg, #6366f1 60%, #60a5fa 100%);
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.10);
+    transition: background 0.2s;
+}
+.btn-primary:hover, .btn-success:hover {
+    background: linear-gradient(90deg, #60a5fa 0%, #6366f1 100%);
+}
+
+.btn-outline-primary {
+    border-color: #6366f1;
+    color: #6366f1;
+    font-weight: 500;
+}
+.btn-outline-primary:hover {
+    background: #6366f1;
+    color: #fff;
+}
+
+.input-group .form-control {
+    border-radius: 8px;
+    border: 1px solid #c7d2fe;
+}
+.form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 2px #6366f133;
+}
+
+.list-group-item {
+    border-radius: 8px;
+    margin-bottom: 6px;
+    border: 1px solid #e0e7ff;
+    background: #fff;
+    font-size: 1.05em;
+    transition: box-shadow 0.2s;
+}
+.list-group-item-action:hover {
+    background: #e0e7ff;
+    cursor: pointer;
+}
+
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.07);
+}
+.table th {
+    background: #6366f1;
+    color: #fff;
+    font-weight: 600;
+}
+.table td {
+    vertical-align: middle;
+}
+
+/* Animación para feedback visual */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.tab-pane, .card, .table, .list-group-item {
+    animation: fadeIn 0.5s;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+    .container { padding: 0 2px; }
+    h1 { font-size: 1.7em; }
+    h2 { font-size: 1.2em; }
+}

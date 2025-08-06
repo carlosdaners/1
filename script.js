@@ -83,8 +83,27 @@ sistema.ejercicios = data.ejercicios.map(e => {
     });
 }
 
+// ===== Verificar localStorage y mostrar error si no está disponible =====
+function verificarLocalStorage() {
+    try {
+        localStorage.setItem('test', 'ok');
+        localStorage.removeItem('test');
+        return true;
+    } catch (e) {
+        const container = document.querySelector('.container');
+        if (container) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger mt-3';
+            errorDiv.textContent = 'Error: Tu navegador no permite guardar datos localmente. Activa el almacenamiento o usa otro navegador.';
+            container.prepend(errorDiv);
+        }
+        return false;
+    }
+}
+
 // ===== Al cargar la página =====
 window.onload = function() {
+    if (!verificarLocalStorage()) return;
     // Activar la pestaña "Ver Rutinas" al cargar la página
     const verRutinasTab = document.getElementById("ver-rutinas-tab");
     verRutinasTab.classList.add("active");
