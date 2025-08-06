@@ -11,7 +11,7 @@ const txtBuscarEjercicioRutina = document.getElementById("buscar-ejercicio-rutin
 const dropdownEjercicios = document.getElementById("dropdown-ejercicios");
 const btnCrearRutina = document.getElementById("crear-rutina");
 const nombreRutina = document.getElementById("nombre-rutina");
-const btn_comenzar_rutina = document.getElementById("comenzar-rutina");
+
 
 
 let sistema = new Sistema();
@@ -325,7 +325,6 @@ if (volverBtn) {
     });
 }
 
-// Modificar el listener del botón 'Comenzar rutina' en el detalle
 const btnComenzarRutina = document.getElementById("comenzar-rutina");
 if (btnComenzarRutina) {
     // Si hay una rutina activa al cargar, deshabilitar el botón
@@ -364,12 +363,12 @@ if (btnComenzarRutina) {
             }
             if (ultimaSesion && ultimaSesion.series && ultimaSesion.series.length > 0) {
                 html += `<table class='table table-sm table-bordered' id='tabla-series-${ejIdx}'>`;
-                html += `<thead><tr><th>Peso</th><th>Reps previas</th><th>Reps hoy</th></tr></thead><tbody>`;
+                html += `<thead><tr><th>Peso previo</th><th>Reps previas</th><th>Peso hoy</th><th>Reps hoy</th></tr></thead><tbody>`;
                 ultimaSesion.series.forEach((serie, idx) => {
                     html += `<tr>`;
                     html += `<td>${serie.peso}</td>`;
                     html += `<td>${serie.repeticiones}</td>`;
-                    // Siempre dejar el input de reps hoy vacío al cargar
+                    html += `<td><input type='number' min='0' class='form-control form-control-sm peso-hoy-input' data-ejidx='${ejIdx}' data-serieidx='${idx}' value='${serie.peso}'></td>`;
                     html += `<td><input type='number' min='0' class='form-control form-control-sm reps-hoy-input' data-ejidx='${ejIdx}' data-serieidx='${idx}' placeholder='Reps hoy' value=''></td>`;
                     html += `</tr>`;
                 });
@@ -393,16 +392,15 @@ if (btnComenzarRutina) {
         ocultarTodo();
         div.classList.add("show", "active");
         document.getElementById("rutina-activa-tab").classList.add("active");
-        // Listeners para guardar reps hoy automáticamente
-        const repsInputs = div.querySelectorAll('.reps-hoy-input');
-        repsInputs.forEach(input => {
+
+        // 🔹 Listener combinado para guardar Peso y Reps hoy automáticamente
+        const inputs = div.querySelectorAll('.peso-hoy-input, .reps-hoy-input');
+        inputs.forEach(input => {
             input.addEventListener('change', function() {
                 const ejIdx = parseInt(this.getAttribute('data-ejidx'));
                 const serieIdx = parseInt(this.getAttribute('data-serieidx'));
-                const repsHoy = parseInt(this.value);
-                if (isNaN(repsHoy) || repsHoy < 0) return;
                 const ej = rutinaActiva.ejercicios[ejIdx];
-                const peso = ej.sesion[ej.sesion.length-1].series[serieIdx].peso;
+
                 // Buscar o crear la sesión de hoy
                 const hoy = new Date().toISOString().slice(0,10);
                 let sesionHoy = ej.sesion && ej.sesion.find(s => s.fecha === hoy);
@@ -411,17 +409,27 @@ if (btnComenzarRutina) {
                     ej.sesion = ej.sesion || [];
                     ej.sesion.push(sesionHoy);
                 }
-                // Buscar si ya existe la serie para ese peso hoy
-                let serieHoy = sesionHoy.series.find(s => s.peso === peso);
-                if (!serieHoy) {
-                    serieHoy = { peso, repeticiones: repsHoy };
-                    sesionHoy.series.push(serieHoy);
-                } else {
-                    serieHoy.repeticiones = repsHoy;
+
+                // Buscar o crear la serie correspondiente
+                if (!sesionHoy.series[serieIdx]) {
+                    sesionHoy.series[serieIdx] = { peso: 0, repeticiones: 0 };
                 }
+
+                // Obtener valores de ambos inputs
+                const pesoInput = div.querySelector(`.peso-hoy-input[data-ejidx='${ejIdx}'][data-serieidx='${serieIdx}']`);
+                const repsInput = div.querySelector(`.reps-hoy-input[data-ejidx='${ejIdx}'][data-serieidx='${serieIdx}']`);
+
+                const pesoHoy = parseFloat(pesoInput.value) || 0;
+                const repsHoy = parseInt(repsInput.value) || 0;
+
+                // Guardar en la serie de hoy
+                sesionHoy.series[serieIdx].peso = pesoHoy;
+                sesionHoy.series[serieIdx].repeticiones = repsHoy;
+
                 guardarSistema();
             });
         });
+
         // Listeners para mostrar/ocultar el form de agregar serie y guardar la nueva serie
         rutinaActiva.ejercicios.forEach((ej, ejIdx) => {
             const btnToggle = document.getElementById(`btn-toggle-agregar-serie-${ejIdx}`);
@@ -460,6 +468,7 @@ if (btnComenzarRutina) {
                 mostrarRutinaActiva(ejIdx);
             });
         });
+
         // Listener para finalizar rutina activa
         document.getElementById("finalizar-rutina-activa").onclick = () => {
             rutinaActiva = null;
@@ -473,6 +482,7 @@ if (btnComenzarRutina) {
         };
     });
 }
+
 
 
 const tabButtons = document.querySelectorAll('#myTab .nav-link');
