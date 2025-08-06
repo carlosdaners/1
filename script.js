@@ -1,7 +1,7 @@
-import { Ejercicio } from '../dominio/ejercicio.js';
-import { Rutina } from '../dominio/rutina.js';
-import { Sistema } from '../dominio/sistema.js';
-import { Sesion } from '../dominio/sesion.js';
+import { Ejercicio } from './dominio/ejercicio.js';
+import { Rutina } from './dominio/rutina.js';
+import { Sistema } from './dominio/sistema.js';
+import { Sesion } from './dominio/sesion.js';
 
 const btn_agregar_ejercicio = document.getElementById("btn-agregar-ejercicio");
 const txt_agregarEjercico = document.getElementById("txt-agregar-ejercicio");
