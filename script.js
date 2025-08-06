@@ -84,14 +84,17 @@ function mostrarLista() {
                 return;
             }
 
-            console.log(`Detalles guardados para ${ej.nombre}: ${detalles}`);
+            
             formContainer.style.display = "none";
             const form = document.getElementById(`input-detalles-${idx}`);
             form.value = "";
-            ej.notas = detalles;
+            ej.agregarNota(detalles);
             guardarSistema();
-            console.log(ej.notas + ej.nombre);
-            // Aquí puedes guardar los detalles en sistema.ejercicios[idx].detalles
+            // mensaje que muetra todas las notas del ejercicio
+            ej.notas.forEach((nota, notaIdx) => {
+                console.log(`Nota ${notaIdx + 1} para ${ej.nombre}: ${nota}`);
+            });
+            
         });
     });
 }
@@ -101,9 +104,10 @@ function mostrarLista() {
 // ===== Guardar datos en localStorage =====
 function guardarSistema() {
    const data = {
-    ejercicios: sistema.ejercicios.map(ej => ({
-        nombre: ej.nombre,
-        sesion: ej.sesion
+   ejercicios: sistema.ejercicios.map(ej => ({
+    nombre: ej.nombre,
+    sesion: ej.sesion,
+    notas: ej.notas || []
     })),
     rutinas: sistema.rutinas.map(r => ({
         nombre: r.nombre,
@@ -124,9 +128,9 @@ function cargarSistema() {
 sistema.ejercicios = data.ejercicios.map(e => {
     const ej = new Ejercicio(e.nombre);
     ej.sesion = e.sesion || [];
+    ej.notas = e.notas || [];
     return ej;
 });
-
 
     // reconstruir rutinas
     sistema.rutinas = data.rutinas.map(r => {
@@ -356,6 +360,18 @@ if (btnComenzarRutina) {
         rutinaActiva.ejercicios.forEach((ej, ejIdx) => {
             html += `<div class='mb-3' id='ejercicio-activo-${ejIdx}'>`;
             html += `<h5>${ej.nombre}</h5>`;
+            // agregar la lista de notas al ejercicio
+            html += `<ul class="list-group list-group-flush mb-3" id="lista-nota-ejercicio-${ejIdx}">`;
+                ej.notas.forEach((nota, idxNota) => {
+                html += `
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${nota}
+                    <button class="btn btn-danger btn-sm" id="btn-borrar-nota-${ejIdx}-${idxNota}">x</button>
+                    </li>
+                    `;
+                });
+            html += `</ul>`; 
+
             // Buscar la última sesión del ejercicio
             let ultimaSesion = null;
             if (ej.sesion && ej.sesion.length > 0) {
@@ -389,11 +405,24 @@ if (btnComenzarRutina) {
         });
         html += `<button class='btn btn-danger' id='finalizar-rutina-activa'>Finalizar Rutina</button>`;
         div.innerHTML = html;
+        //funcionalidad de los botones para borrar notas en cada ejercicio
+        rutinaActiva.ejercicios.forEach((ej, ejIdx) => {
+            ej.notas.forEach((nota, idxNota) => {
+                 const btnBorrar = document.getElementById(`btn-borrar-nota-${ejIdx}-${idxNota}`);
+                 if (btnBorrar) {
+                    btnBorrar.addEventListener('click', () => {
+                        rutinaActiva.ejercicios[ejIdx].notas.splice(idxNota, 1);
+                        guardarSistema();
+                        mostrarRutinaActiva(ejIdx);
+                    });
+                 }
+            });
+        });
         ocultarTodo();
         div.classList.add("show", "active");
         document.getElementById("rutina-activa-tab").classList.add("active");
 
-        // 🔹 Listener combinado para guardar Peso y Reps hoy automáticamente
+        // Listener combinado para guardar Peso y Reps hoy automáticamente
         const inputs = div.querySelectorAll('.peso-hoy-input, .reps-hoy-input');
         inputs.forEach(input => {
             input.addEventListener('change', function() {
@@ -497,7 +526,7 @@ tabButtons.forEach(btn => {
     });
 });
 
-// Nueva función para refrescar la vista de la rutina activa
+//función para refrescar la vista de la rutina activa
 function mostrarRutinaActiva(destacarEjIdx = null) {
     if (!rutinaActiva) return;
     const div = document.getElementById("rutina-activa");
