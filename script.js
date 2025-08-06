@@ -29,18 +29,73 @@ function ocultarTodo () {
     document.getElementById("rutinas-tab").classList.remove("active");
 }
 
-// ===== Función para mostrar lista =====
+// Función para mostrar lista de ejercicio en pestana ejercicios
 function mostrarLista() {
-    console.log("Ejercicios actuales en sistema:", sistema.ejercicios);
     lista_ejercicios.innerHTML = "";
-    sistema.ejercicios.forEach(ej => {
-        console.log("Elemento individual:", ej, "Tipo:", typeof ej);
-        console.log("Propiedades:", Object.keys(ej));
-        const li = document.createElement("li");
-        li.textContent = ej.nombre;
-        lista_ejercicios.appendChild(li);
+    sistema.ejercicios.forEach((ej, idx) => {
+        const card = document.createElement("div");
+        card.className = "card mb-3";
+
+        const cardBody = document.createElement("div");
+        cardBody.className = "card-body";
+
+        const cardTitle = document.createElement("h5");
+        cardTitle.className = "card-title";
+        cardTitle.textContent = ej.nombre;
+
+        const formContainer = document.createElement("div");
+        formContainer.id = `form-ejercicio-${idx}`;
+        formContainer.style.display = "none";
+        formContainer.innerHTML = `
+            <div class='input-group input-group-sm mb-2' style='max-width:350px;'>
+                <input type='text' class='form-control' placeholder='Detalles' id='input-detalles-${idx}'>
+                <button class='btn btn-success' id='btn-guardar-${idx}'>Guardar</button>
+            </div>
+        `;
+
+        
+        formContainer.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        card.style.cursor = "pointer";
+        card.addEventListener("mouseenter", () => {
+            card.classList.add("border-primary", "shadow");
+        });
+        card.addEventListener("mouseleave", () => {
+            card.classList.remove("border-primary", "shadow");
+        });
+
+        card.addEventListener("click", () => {
+            formContainer.style.display = formContainer.style.display === "none" ? "block" : "none";
+        });
+
+        cardBody.appendChild(cardTitle);
+        cardBody.appendChild(formContainer);
+        card.appendChild(cardBody);
+        lista_ejercicios.appendChild(card);
+
+        formContainer.querySelector(`#btn-guardar-${idx}`).addEventListener("click", (e) => {
+            e.stopPropagation(); 
+            const detalles = document.getElementById(`input-detalles-${idx}`).value.trim();
+
+            if (detalles === "") {
+                alert("Por favor, ingresa detalles.");
+                return;
+            }
+
+            console.log(`Detalles guardados para ${ej.nombre}: ${detalles}`);
+            formContainer.style.display = "none";
+            const form = document.getElementById(`input-detalles-${idx}`);
+            form.value = "";
+            ej.notas = detalles;
+            guardarSistema();
+            console.log(ej.notas + ej.nombre);
+            // Aquí puedes guardar los detalles en sistema.ejercicios[idx].detalles
+        });
     });
 }
+
 
 
 // ===== Guardar datos en localStorage =====

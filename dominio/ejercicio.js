@@ -3,6 +3,7 @@ export class Ejercicio {
     constructor(nombre) {
         this.nombre = nombre;
         this.sesion = [];
+        this.notas;
     }
 
     agregarSesion (sesion) {
