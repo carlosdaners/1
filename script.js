@@ -30,9 +30,19 @@ function ocultarTodo () {
 }
 
 // Función para mostrar lista de ejercicio en pestana ejercicios
-function mostrarLista() {
+function mostrarLista(filtro = "") {
     lista_ejercicios.innerHTML = "";
-    sistema.ejercicios.forEach((ej, idx) => {
+
+    let ejercicios;
+    if (filtro && filtro.trim() !== "") {
+        ejercicios = sistema.ejercicios.filter(ej => 
+            ej.nombre.toLowerCase().includes(filtro.toLowerCase())
+        );
+    } else {
+        ejercicios = sistema.ejercicios;
+    }
+
+    ejercicios.forEach((ej, idx) => {
         const card = document.createElement("div");
         card.className = "card mb-3";
 
@@ -53,7 +63,6 @@ function mostrarLista() {
             </div>
         `;
 
-        
         formContainer.addEventListener('click', (e) => {
             e.stopPropagation();
         });
@@ -67,7 +76,11 @@ function mostrarLista() {
         });
 
         card.addEventListener("click", () => {
-            formContainer.style.display = formContainer.style.display === "none" ? "block" : "none";
+            if (formContainer.style.display === "none") {
+                formContainer.style.display = "block";
+            } else {
+                formContainer.style.display = "none";
+            }
         });
 
         cardBody.appendChild(cardTitle);
@@ -76,7 +89,7 @@ function mostrarLista() {
         lista_ejercicios.appendChild(card);
 
         formContainer.querySelector(`#btn-guardar-${idx}`).addEventListener("click", (e) => {
-            e.stopPropagation(); 
+            e.stopPropagation();
             const detalles = document.getElementById(`input-detalles-${idx}`).value.trim();
 
             if (detalles === "") {
@@ -84,20 +97,19 @@ function mostrarLista() {
                 return;
             }
 
-            
             formContainer.style.display = "none";
             const form = document.getElementById(`input-detalles-${idx}`);
             form.value = "";
             ej.agregarNota(detalles);
             guardarSistema();
-            // mensaje que muetra todas las notas del ejercicio
+
             ej.notas.forEach((nota, notaIdx) => {
                 console.log(`Nota ${notaIdx + 1} para ${ej.nombre}: ${nota}`);
             });
-            
         });
     });
 }
+
 
 
 
@@ -562,3 +574,21 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
         }
     };
 }
+
+// funcionalidad para buscar ejericicio en la pestana ejercicios
+const btnBuscarEjercicio = document.getElementById("btn-buscar-ejercicio-ejercicios");
+const txtBuscarEjercicio = document.getElementById("txt-buscar-ejercicio");
+btnBuscarEjercicio.addEventListener("click", () => {
+    if (txtBuscarEjercicio.classList.contains("d-none")) {
+        txtBuscarEjercicio.classList.remove("d-none");
+        txtBuscarEjercicio.focus();
+        txtBuscarEjercicio.addEventListener("input", (e) => {
+            mostrarLista(e.target.value);
+        });
+    } else {
+        txtBuscarEjercicio.classList.add("d-none");
+        txtBuscarEjercicio.value = "";
+        mostrarLista();
+    }
+});
+
