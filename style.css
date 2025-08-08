@@ -120,5 +120,13 @@ h1, h2, h5 {
   right: 0;
   z-index: 1000;
   background-color: #f8f9fa;
+  height: 50px;  
+}
+
+#ver-rutinas-tab,
+#ejercicios-tab,
+#rutinas-tab,
+#rutina-activa-tab{
+    height: 50px;
 }
 
