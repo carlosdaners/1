@@ -121,7 +121,7 @@ h1, h2, h5 {
   z-index: 1000;
   background-color: #f8f9fa;
   height: 68px;
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: 34px;
   box-sizing: content-box;
 }
 
