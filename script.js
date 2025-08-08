@@ -438,10 +438,12 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
             </div>
         `;
 
-        html += `</div>`; // cierre div ejercicio
+        html += `</div>`; 
     });
 
     html += `<button class='btn btn-danger' id='finalizar-rutina-activa'>Finalizar Rutina</button>`;
+     html += `<div style="height: 80px;"></div>`;
+     // padding para el boton de finalizr rutina 
     div.innerHTML = html;
 
     ocultarTodo();
@@ -456,7 +458,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
                 btnBorrar.addEventListener('click', () => {
                     rutinaActiva.ejercicios[ejIdx].notas.splice(idxNota, 1);
                     guardarSistema();
-                    mostrarRutinaActiva(ejIdx); // recarga vista
+                    mostrarRutinaActiva(ejIdx); 
                 });
             }
         });
