@@ -112,3 +112,13 @@ h1, h2, h5 {
     h1 { font-size: 1.7em; }
     h2 { font-size: 1.2em; }
 }
+
+#myTab {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #f8f9fa;
+}
+
