@@ -409,7 +409,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
         }
 
         if (ultimaSesion && ultimaSesion.series && ultimaSesion.series.length > 0) {
-            html += `<table class='table table-sm table-bordered' id='tabla-series-${ejIdx}'>`;
+            html += `<table class='table table-sm' id='tabla-series-${ejIdx}'>`;
             html += `<thead><tr class="text-center"><th>Serie</th><th>Anterior</th><th>Peso</th><th>Reps</th></tr></thead><tbody>`;
 
             ultimaSesion.series.forEach((serie, idx) => {
