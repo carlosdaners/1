@@ -426,7 +426,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
         }
 
         // Botón y formulario para agregar nueva serie
-        html += `<button class='btn btn-outline-primary btn-sm mb-2' id='btn-toggle-agregar-serie-${ejIdx}'>Agregar serie</button>`;
+        html += `<button class='btn btn-outline-primary btn-sm mb-2 w-100' id='btn-toggle-agregar-serie-${ejIdx}'>Agregar serie</button>`;
         html += `
             <div id='agregar-serie-form-${ejIdx}' style='display:none;'>
                 <div class='input-group input-group-sm mb-2' style='max-width:350px;'>
@@ -441,7 +441,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
         html += `</div>`; 
     });
 
-    html += `<button class='btn btn-danger' id='finalizar-rutina-activa'>Finalizar Rutina</button>`;
+    html += `<button class='btn btn-danger w-100' id='finalizar-rutina-activa'>Finalizar Rutina</button>`;
      html += `<div style="height: 80px;"></div>`;
      // padding para el boton de finalizr rutina 
     div.innerHTML = html;
