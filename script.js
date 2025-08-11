@@ -409,15 +409,15 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
         }
 
         if (ultimaSesion && ultimaSesion.series && ultimaSesion.series.length > 0) {
-            html += `<table class='table table-sm table-bordered' id='tabla-series-${ejIdx}'>`;
-            html += `<thead><tr><th>Peso previo</th><th>Reps previas</th><th>Peso hoy</th><th>Reps hoy</th></tr></thead><tbody>`;
+            html += `<table class='table table-sm' id='tabla-series-${ejIdx}'>`;
+            html += `<thead><tr class="text-center"><th>Serie</th><th>Anterior</th><th>Peso</th><th>Reps</th></tr></thead><tbody>`;
 
             ultimaSesion.series.forEach((serie, idx) => {
-                html += `<tr>`;
-                html += `<td>${serie.peso}</td>`;
-                html += `<td>${serie.repeticiones}</td>`;
-                html += `<td><input type='number' min='0' class='form-control form-control-sm peso-hoy-input' data-ejidx='${ejIdx}' data-serieidx='${idx}' value='${serie.peso}'></td>`;
-                html += `<td><input type='number' min='0' class='form-control form-control-sm reps-hoy-input' data-ejidx='${ejIdx}' data-serieidx='${idx}' placeholder='Reps hoy' value=''></td>`;
+                html += `<tr class="text-center">`;
+                html += `<td>${idx+1}</td>`;
+                html += `<td>${serie.peso} x ${serie.repeticiones}</td>`;
+               html += `<td><input type="number" inputmode="numeric" pattern="[0-9]*" class="form-control form-control-sm text-center peso-hoy-input" data-ejidx="${ejIdx}" data-serieidx="${idx}" value="${serie.peso}"></td>`;
+                html += `<td><input type="number" inputmode="numeric" pattern="[0-9]*" class="form-control form-control-sm text-center reps-hoy-input" data-ejidx="${ejIdx}" data-serieidx="${idx}" placeholder="Reps hoy"></td>`;
                 html += `</tr>`;
             });
 
@@ -426,7 +426,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
         }
 
         // Botón y formulario para agregar nueva serie
-        html += `<button class='btn btn-outline-primary btn-sm mb-2' id='btn-toggle-agregar-serie-${ejIdx}'>Agregar serie</button>`;
+        html += `<button class='btn btn-outline-primary btn-sm mb-2 w-100' id='btn-toggle-agregar-serie-${ejIdx}'>Agregar serie</button>`;
         html += `
             <div id='agregar-serie-form-${ejIdx}' style='display:none;'>
                 <div class='input-group input-group-sm mb-2' style='max-width:350px;'>
@@ -441,7 +441,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
         html += `</div>`; 
     });
 
-    html += `<button class='btn btn-danger' id='finalizar-rutina-activa'>Finalizar Rutina</button>`;
+    html += `<button class='btn btn-danger w-100' id='finalizar-rutina-activa'>Finalizar Rutina</button>`;
      html += `<div style="height: 80px;"></div>`;
      // padding para el boton de finalizr rutina 
     div.innerHTML = html;
