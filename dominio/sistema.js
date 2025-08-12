@@ -50,20 +50,40 @@ export class Sistema {
     }
 
     asignarRutinaADia(dia, nombreRutina) {
-        
-  const rutina = this.rutinas.find(r => r.nombre === nombreRutina) || null;
-  if (!this.hasOwnProperty(dia)) {
-    console.error("Día inválido");
-    return;
-  }
-  this[dia].rutina = rutina;
-  if (rutina !== null) {
-    console.log(`Rutina ${nombreRutina} asignada al día ${dia}`);
-    for (let rut of this[dia].rutina.ejercicios) {
-        console.log(rut.nombre);
+        const rutina = this.rutinas.find(r => r.nombre === nombreRutina) || null;
+        if (!this.hasOwnProperty(dia)) {
+            console.error("Día inválido");
+            return;
+        }
+        this[dia].rutina = rutina;
+        if (rutina !== null) {
+            console.log(`Rutina ${nombreRutina} asignada al día ${dia}`);
+            for (let rut of this[dia].rutina.ejercicios) {
+                console.log(rut.nombre);
+            }
+        }
     }
-}
-}
+
+    asignarEjercicioADia(dia, ejercicio) {
+        const ej = this.ejercicios.find(e => e.nombre === ejercicio.nombre) || null;
+       if (!this.hasOwnProperty(dia)) {
+            console.error("Día inválido");
+            return;
+        }
+            let yaEsta = false;
+            for (let e of this[dia].ejerciciosExtras) {
+                if (e.nombre === ej.nombre) {
+                    yaEsta = true;
+                    console.log(`El ejercicio ${ej.nombre} ya está asignado al día ${dia}`);
+                    break;
+                }
+            }
+            if (ej !== null && !yaEsta) {
+                this[dia].ejerciciosExtras.push(ej);
+                console.log("----------------------------");
+                console.log(this[dia].ejerciciosExtras);
+            }
+    }
 
     
 }

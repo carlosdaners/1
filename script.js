@@ -66,7 +66,24 @@ function mostrarLista(filtro = "") {
                 <input type='text' class='form-control' placeholder='Detalles' id='input-detalles-${idx}'>
                 <button class='btn btn-success' id='btn-guardar-${idx}'>Guardar</button>
             </div>
-           <button class="btn btn-primary btn-sm w-100" id="btn-agregar-ejercicio-dia-${idx}">Agregar a dia</button>`;
+           
+            <div style="display: flex; gap: 8px;">
+                <select id="select-dia-${idx}" class="form-select form-select-sm">
+                    <option value="">Seleccionar día</option>
+                    <option value="lunes">Lunes</option>
+                    <option value="martes">Martes</option>
+                    <option value="miercoles">Miércoles</option>
+                    <option value="jueves">Jueves</option>
+                    <option value="viernes">Viernes</option>
+                    <option value="sabado">Sábado</option>
+                    <option value="domingo">Domingo</option>
+                </select>
+
+                <button class="btn btn-primary btn-sm w-100" id="btn-agregar-ejercicio-dia-${idx}">
+                    Agregar a día
+                </button>
+            </div>
+            `;
 
         formContainer.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -116,7 +133,9 @@ function mostrarLista(filtro = "") {
         formContainer.querySelector(`#btn-agregar-ejercicio-dia-${idx}`).addEventListener("click", (e) => {
          e.stopPropagation();
          // falta agregar la funcionalidad para asignar el ejercicio al día
-         console.log(`Agregar ejercicio ${ej.nombre} al día desde botón índice ${idx}`);
+         const selectDia = document.getElementById(`select-dia-${idx}`).value;
+         sistema.asignarEjercicioADia(selectDia, ej);
+        guardarSistema();
         });
     });
 }
@@ -701,6 +720,7 @@ btnVolverAsignarRutinaDia.addEventListener("click", () => {
 
              document.getElementById("ver-rutinas").classList.add("show", "active");
              document.getElementById("ver-rutinas-tab").classList.add("active");
+             cargarRutinaDeHoy(rutinaDeHoy());
             
         });
     }
@@ -734,9 +754,12 @@ btnVolverAsignarRutinaDia.addEventListener("click", () => {
 
     // funcion para cargar la rutina de hoy en la pestana de ver rutinas
     function cargarRutinaDeHoy (rutina) {
-        if (rutina === null) return;
         const rutinaHoy = document.getElementById("rutina-de-hoy");
-        
+        if (rutina === null) {
+            rutinaHoy.innerHTML ="";
+            return;
+        };
+     
         console.log("-----------------------");
         console.log(rutina);  
        
