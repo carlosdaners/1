@@ -19,6 +19,9 @@ let sistema = new Sistema();
 // Variable global para la rutina activa
 let rutinaActiva = null;
 
+// variable global para el dia de hoy 
+let diaHoy = null;
+
 function ocultarTodo () {
     document.getElementById("ejercicios").classList.remove("show", "active");
     document.getElementById("ver-rutinas").classList.remove("show", "active");
@@ -27,6 +30,8 @@ function ocultarTodo () {
     document.getElementById("ejercicios-tab").classList.remove("active");
     document.getElementById("ver-rutinas-tab").classList.remove("active");
     document.getElementById("rutinas-tab").classList.remove("active");
+    document.getElementById("asignacion-rutina-dia-tab").classList.remove("show", "active");
+    
 }
 
 // Función para mostrar lista de ejercicio en pestana ejercicios
@@ -61,7 +66,7 @@ function mostrarLista(filtro = "") {
                 <input type='text' class='form-control' placeholder='Detalles' id='input-detalles-${idx}'>
                 <button class='btn btn-success' id='btn-guardar-${idx}'>Guardar</button>
             </div>
-        `;
+           <button class="btn btn-primary btn-sm w-100" id="btn-agregar-ejercicio-dia-${idx}">Agregar a dia</button>`;
 
         formContainer.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -107,6 +112,12 @@ function mostrarLista(filtro = "") {
                 console.log(`Nota ${notaIdx + 1} para ${ej.nombre}: ${nota}`);
             });
         });
+
+        formContainer.querySelector(`#btn-agregar-ejercicio-dia-${idx}`).addEventListener("click", (e) => {
+         e.stopPropagation();
+         // falta agregar la funcionalidad para asignar el ejercicio al día
+         console.log(`Agregar ejercicio ${ej.nombre} al día desde botón índice ${idx}`);
+        });
     });
 }
 
@@ -115,44 +126,73 @@ function mostrarLista(filtro = "") {
 
 // ===== Guardar datos en localStorage =====
 function guardarSistema() {
-   const data = {
-   ejercicios: sistema.ejercicios.map(ej => ({
-    nombre: ej.nombre,
-    sesion: ej.sesion,
-    notas: ej.notas || []
+  const data = {
+    ejercicios: sistema.ejercicios.map(ej => ({
+      nombre: ej.nombre,
+      sesion: ej.sesion,
+      notas: ej.notas || []
     })),
     rutinas: sistema.rutinas.map(r => ({
-        nombre: r.nombre,
-        ejercicios: r.ejercicios.map(e => e.nombre)
-    }))
-};
-    localStorage.setItem("sistema", JSON.stringify(data));
+      nombre: r.nombre,
+      ejercicios: r.ejercicios.map(e => e.nombre)
+    })),
+    asignacionDias: {}
+  };
+
+  // Guardar asignación por día
+  ['lunes','martes','miercoles','jueves','viernes','sabado','domingo'].forEach(dia => {
+    const objDia = sistema[dia];
+    data.asignacionDias[dia] = {
+      rutina: objDia.rutina ? objDia.rutina.nombre : null,
+      ejerciciosExtras: objDia.ejerciciosExtras.map(e => e.nombre)
+    };
+  });
+
+  localStorage.setItem("sistema", JSON.stringify(data));
 }
+
 
 // ===== Cargar datos y reconstruir objetos =====
 function cargarSistema() {
-    const guardado = localStorage.getItem("sistema");
-    if (!guardado) return;
+  const guardado = localStorage.getItem("sistema");
+  if (!guardado) return;
 
-    const data = JSON.parse(guardado);
+  const data = JSON.parse(guardado);
 
-    // reconstruir ejercicios
-sistema.ejercicios = data.ejercicios.map(e => {
+  sistema.ejercicios = data.ejercicios.map(e => {
     const ej = new Ejercicio(e.nombre);
     ej.sesion = e.sesion || [];
     ej.notas = e.notas || [];
     return ej;
-});
+  });
 
-    // reconstruir rutinas
-    sistema.rutinas = data.rutinas.map(r => {
-        const rutina = new Rutina(r.nombre);
-        rutina.ejercicios = r.ejercicios
-            .map(nombre => sistema.ejercicios.find(e => e.nombre === nombre))
-            .filter(Boolean);
-        return rutina;
-    });
+  sistema.rutinas = data.rutinas.map(r => {
+    const rutina = new Rutina(r.nombre);
+    rutina.ejercicios = r.ejercicios
+      .map(nombre => sistema.ejercicios.find(e => e.nombre === nombre))
+      .filter(Boolean);
+    return rutina;
+  });
+
+  // Cargar asignaciones por día
+  if (data.asignacionDias) {
+    for (const dia in data.asignacionDias) {
+      if (sistema.hasOwnProperty(dia)) {
+        const diaData = data.asignacionDias[dia];
+        const rutina = sistema.rutinas.find(r => r.nombre === diaData.rutina) || null;
+        const extras = (diaData.ejerciciosExtras || [])
+          .map(nombre => sistema.ejercicios.find(e => e.nombre === nombre))
+          .filter(Boolean);
+
+        sistema[dia] = {
+          rutina: rutina,
+          ejerciciosExtras: extras
+        };
+      }
+    }
+  }
 }
+
 
 // ===== Verificar localStorage y mostrar error si no está disponible =====
 function verificarLocalStorage() {
@@ -175,7 +215,7 @@ function verificarLocalStorage() {
 // ===== Al cargar la página =====
 window.onload = function() {
     if (!verificarLocalStorage()) return;
-    // Activar la pestaña "Ver Rutinas" al cargar la página
+    
     const verRutinasTab = document.getElementById("ver-rutinas-tab");
     verRutinasTab.classList.add("active");
     document.getElementById("ver-rutinas").classList.add("show", "active");
@@ -187,6 +227,8 @@ window.onload = function() {
     cargarSistema();
     mostrarLista();
     mostrarRutinasCreadas();
+    actualizarDia();
+    cargarRutinaDeHoy(rutinaDeHoy());
 };
 
 // ===== Evento para agregar ejercicio =====
@@ -299,7 +341,7 @@ function mostrarRutinasCreadas() {
         const cardBody = document.createElement("div");
         cardBody.className = "card-body";
         const cardTitle = document.createElement("h5");
-        cardTitle.className = "card-title";
+        cardTitle.className = "card-title text-center";
         cardTitle.textContent = r.nombre;
         cardBody.appendChild(cardTitle);
         card.appendChild(cardBody);
@@ -594,3 +636,145 @@ btnBuscarEjercicio.addEventListener("click", () => {
     }
 });
 
+// funcionalidad de coordinar rutinas por dia
+const btnRutinasPorDia = document.getElementById("rutinas-por-dia");
+btnRutinasPorDia.addEventListener("click", () => {
+    ocultarTodo();
+    document.getElementById("asignacion-rutina-dia-tab").classList.add("show", "active");
+    cargarSelectRutinas();
+});
+
+const btnVolverAsignarRutinaDia = document.getElementById("volver-asignar-rutina-dia");
+btnVolverAsignarRutinaDia.addEventListener("click", () => {
+    ocultarTodo();
+    document.getElementById("ver-rutinas").classList.add("show", "active");
+    document.getElementById("ver-rutinas-tab").classList.add("active");
+});
+
+    // funcion para cargar los selects dentro de la pestaña de asignación de rutina por día
+    const selectDias = ['rutina-lunes', 'rutina-martes', 'rutina-miercoles', 'rutina-jueves', 'rutina-viernes', 'rutina-sabado', 'rutina-domingo'];
+
+    function cargarSelectRutinas () {
+        selectDias.forEach(dia => {
+            const select = document.getElementById(dia);
+            select.innerHTML = "";
+            const titulo = document.createElement("option");
+            titulo.value = "";
+            titulo.textContent = "Seleccione una rutina";
+            titulo.disabled = true;
+            titulo.selected = true;
+            select.appendChild(titulo);
+            
+            sistema.rutinas.forEach(rutina => {
+                const opcion = document.createElement("option");
+                opcion.value = rutina.nombre;
+                opcion.textContent = rutina.nombre;
+                select.appendChild(opcion);
+            });
+            const ninguna = document.createElement("option");
+            ninguna.value = "";
+            ninguna.textContent = "Ninguna";
+            select.appendChild(ninguna);
+        });
+
+        // guardar asignacion de las rutinas por dia
+        const btnGuardarAsignacion = document.getElementById("guardar-asignacion-rutinas");
+        btnGuardarAsignacion.addEventListener("click", () => {
+            const lunes = document.getElementById("rutina-lunes").value;
+            const martes = document.getElementById("rutina-martes").value;
+            const miercoles = document.getElementById("rutina-miercoles").value;
+            const jueves = document.getElementById("rutina-jueves").value;
+            const viernes = document.getElementById("rutina-viernes").value;
+            const sabado = document.getElementById("rutina-sabado").value;
+            const domingo = document.getElementById("rutina-domingo").value;
+            sistema.asignarRutinaADia("lunes", lunes);
+            sistema.asignarRutinaADia("martes", martes);
+            sistema.asignarRutinaADia("miercoles", miercoles);
+            sistema.asignarRutinaADia("jueves", jueves);
+            sistema.asignarRutinaADia("viernes", viernes);
+            sistema.asignarRutinaADia("sabado", sabado);
+            sistema.asignarRutinaADia("domingo", domingo);
+            guardarSistema();
+            ocultarTodo();
+            // alert para avisar que se guardo correctamente
+            alert("Asignación de rutinas por día guardada correctamente.");
+
+             document.getElementById("ver-rutinas").classList.add("show", "active");
+             document.getElementById("ver-rutinas-tab").classList.add("active");
+            
+        });
+    }
+    
+//funcionalidad para actualizar el dia de hoy 
+
+    function actualizarDia () {
+        let dia = new Date();
+        diaHoy = dia.getDay();
+        console.log(diaHoy);
+    }
+
+    function rutinaDeHoy () {
+        
+        if (diaHoy === 0) {
+            return sistema.domingo.rutina;
+        } else if (diaHoy === 1) {
+            return sistema.lunes.rutina;
+        } else if (diaHoy === 2) {
+            return sistema.martes.rutina;
+        } else if (diaHoy === 3) {
+            return sistema.miercoles.rutina;
+        } else if (diaHoy === 4) {
+            return sistema.jueves.rutina;
+        } else if (diaHoy === 5) {
+            return sistema.viernes.rutina;
+        } else if (diaHoy === 6) {
+            return sistema.sabado.rutina;
+        }
+    }
+
+    // funcion para cargar la rutina de hoy en la pestana de ver rutinas
+    function cargarRutinaDeHoy (rutina) {
+        if (rutina === null) return;
+        const rutinaHoy = document.getElementById("rutina-de-hoy");
+        
+        console.log("-----------------------");
+        console.log(rutina);  
+       
+        rutinaHoy.innerHTML = "";
+       
+        const card = document.createElement("div");
+        card.className = "card mb-3";
+        const cardHeader = document.createElement("div");
+        cardHeader.className = "card-header bg-primary text-white text-center shadow-sm";
+        cardHeader.textContent = "Rutina de Hoy";
+        card.appendChild(cardHeader);
+        const cardBody = document.createElement("div");
+        cardBody.className = "card-body text-center";
+        const cardTitle = document.createElement("h5");
+        cardTitle.className = "card-title";
+        cardTitle.textContent = rutina.nombre;
+        cardBody.appendChild(cardTitle);
+        card.appendChild(cardBody);
+        card.style.cursor = "pointer";
+        card.addEventListener("mouseenter", () => {
+            card.classList.add("border-primary", "shadow");
+        });
+        card.addEventListener("mouseleave", () => {
+            card.classList.remove("border-primary", "shadow");
+        });
+        card.addEventListener("click", () => {
+            ocultarTodo();
+            document.getElementById("detalle-rutina").classList.add("show", "active");
+            document.getElementById("ver-rutinas-tab").classList.remove("active");
+            document.getElementById("detalle-rutina-nombre").textContent = rutina.nombre;
+            const ul = document.getElementById("detalle-rutina-ejercicios");
+            ul.innerHTML = "";
+            rutina.ejercicios.forEach(ej => {
+                const li = document.createElement("li");
+                li.className = "list-group-item";
+                li.textContent = ej.nombre;
+                ul.appendChild(li);
+            });
+        });
+        rutinaHoy.appendChild(card);
+    }
