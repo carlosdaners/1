@@ -132,10 +132,11 @@ function mostrarLista(filtro = "") {
 
         formContainer.querySelector(`#btn-agregar-ejercicio-dia-${idx}`).addEventListener("click", (e) => {
          e.stopPropagation();
-         // falta agregar la funcionalidad para asignar el ejercicio al día
+         
          const selectDia = document.getElementById(`select-dia-${idx}`).value;
          sistema.asignarEjercicioADia(selectDia, ej);
         guardarSistema();
+        alert(`Ejercicio ${ej.nombre} asignado al día ${selectDia}`);
         });
     });
 }

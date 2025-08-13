@@ -56,6 +56,7 @@ export class Sistema {
             return;
         }
         this[dia].rutina = rutina;
+        this[dia].ejerciciosExtras = []; 
         if (rutina !== null) {
             console.log(`Rutina ${nombreRutina} asignada al día ${dia}`);
             for (let rut of this[dia].rutina.ejercicios) {
