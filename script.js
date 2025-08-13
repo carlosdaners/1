@@ -810,6 +810,7 @@ btnVolverAsignarRutinaDia.addEventListener("click", () => {
     const dia = listaDias[diaHoy]
 
     const div = document.getElementById('ejercicios-extras-rutina-activa')
+    div.innerHTML = ""; 
     
     let ejerciciosExtra = sistema[dia].ejerciciosExtras;
     if (!ejerciciosExtra || ejerciciosExtra.length === 0) {
