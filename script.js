@@ -501,6 +501,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
 
         html += `</div>`; 
     });
+        html += `<div id="ejercicios-extras-rutina-activa" class="mb-3"></div>`;
 
     html += `<button class='btn btn-danger w-100' id='finalizar-rutina-activa'>Finalizar Rutina</button>`;
      html += `<div style="height: 80px;"></div>`;
@@ -607,6 +608,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
 
             mostrarRutinaActiva(ejIdx); // recargar y destacar ejercicio
         });
+        
     });
 
     // --- Botón para finalizar rutina activa ---
@@ -636,6 +638,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
             btnComenzarRutina.style.cursor = "pointer";
         }
     };
+   cargarEjerciciosExtra();
 }
 
 // funcionalidad para buscar ejericicio en la pestana ejercicios
@@ -801,3 +804,160 @@ btnVolverAsignarRutinaDia.addEventListener("click", () => {
         });
         rutinaHoy.appendChild(card);
     }
+
+    function cargarEjerciciosExtra() {
+    const listaDias = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+    const dia = listaDias[diaHoy]
+
+    const div = document.getElementById('ejercicios-extras-rutina-activa')
+    
+    let ejerciciosExtra = sistema[dia].ejerciciosExtras;
+    if (!ejerciciosExtra || ejerciciosExtra.length === 0) {
+        return;
+    }
+
+    
+    let html = `<hr class="my-4 border-3 border-dark">`;
+    html += `<h5 class="mt-3">Ejercicios Extra</h5>`;
+
+    ejerciciosExtra.forEach((ej, ejIdx) => {
+        html += `<div class='mb-3' id='ejercicio-extra-${ejIdx}'>`;
+        html += `<h6>${ej.nombre}</h6>`;
+
+        // Notas
+        html += `<ul class="list-group list-group-flush mb-3" id="lista-nota-extra-${ejIdx}">`;
+        ej.notas.forEach((nota, idxNota) => {
+            html += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${nota}
+                    <button class="btn btn-danger btn-sm" id="btn-borrar-nota-extra-${ejIdx}-${idxNota}">x</button>
+                </li>
+            `;
+        });
+        html += `</ul>`;
+
+        // Última sesión
+        let ultimaSesion = null;
+        if (ej.sesion && ej.sesion.length > 0) {
+            ultimaSesion = ej.sesion[ej.sesion.length - 1];
+        }
+
+        if (ultimaSesion && ultimaSesion.series && ultimaSesion.series.length > 0) {
+            html += `<table class='table table-sm'><thead><tr class="text-center"><th>Serie</th><th>Anterior</th><th>Peso</th><th>Reps</th></tr></thead><tbody>`;
+
+            ultimaSesion.series.forEach((serie, idx) => {
+                html += `<tr class="text-center">`;
+                html += `<td>${idx + 1}</td>`;
+                html += `<td>${serie.peso} x ${serie.repeticiones}</td>`;
+                html += `<td><input type="number" inputmode="numeric" class="form-control form-control-sm text-center peso-extra-input" data-ejidx="${ejIdx}" data-serieidx="${idx}" value="${serie.peso}"></td>`;
+                html += `<td><input type="number" inputmode="numeric" class="form-control form-control-sm text-center reps-extra-input" data-ejidx="${ejIdx}" data-serieidx="${idx}" placeholder="Reps hoy"></td>`;
+                html += `</tr>`;
+            });
+
+            html += `</tbody></table>`;
+            html += `<div class='text-muted small'>Fecha previa: ${ultimaSesion.fecha || 'Sin fecha'}</div>`;
+        }
+
+        // Botón y formulario para agregar serie
+        html += `<button class='btn btn-outline-primary btn-sm mb-2 w-100' id='btn-toggle-agregar-extra-${ejIdx}'>Agregar serie</button>`;
+        html += `
+            <div id='agregar-extra-form-${ejIdx}' style='display:none;'>
+                <div class='input-group input-group-sm mb-2' style='max-width:350px;'>
+                    <input type='number' min='0' class='form-control' placeholder='Peso' id='input-peso-extra-${ejIdx}'>
+                    <input type='number' min='1' class='form-control' placeholder='Reps' id='input-reps-extra-${ejIdx}'>
+                    <button class='btn btn-success' id='btn-agregar-extra-nueva-${ejIdx}'>Guardar</button>
+                    <button class='btn btn-secondary' id='btn-cerrar-extra-form-${ejIdx}'>Cerrar</button>
+                </div>
+            </div>
+        `;
+
+        html += `</div>`;
+    });
+
+    div.innerHTML += html;
+
+    // --- Eventos borrar nota ---
+    ejerciciosExtra.forEach((ej, ejIdx) => {
+        ej.notas.forEach((nota, idxNota) => {
+            const btn = document.getElementById(`btn-borrar-nota-extra-${ejIdx}-${idxNota}`);
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    ejerciciosExtra[ejIdx].notas.splice(idxNota, 1);
+                    guardarSistema();
+                    cargarEjerciciosExtra();
+                });
+            }
+        });
+    });
+
+    // --- Guardar cambios peso/reps ---
+    div.querySelectorAll('.peso-extra-input, .reps-extra-input').forEach(input => {
+        input.addEventListener('change', function () {
+            const ejIdx = parseInt(this.getAttribute('data-ejidx'));
+            const serieIdx = parseInt(this.getAttribute('data-serieidx'));
+            const ej = ejerciciosExtra[ejIdx];
+
+            const hoy = new Date().toISOString().slice(0, 10);
+            let sesionHoy = ej.sesion && ej.sesion.find(s => s.fecha === hoy);
+            if (!sesionHoy) {
+                sesionHoy = new Sesion(hoy);
+                ej.sesion = ej.sesion || [];
+                ej.sesion.push(sesionHoy);
+            }
+
+            if (!sesionHoy.series[serieIdx]) {
+                sesionHoy.series[serieIdx] = { peso: 0, repeticiones: 0 };
+            }
+
+            const pesoHoy = parseFloat(div.querySelector(`.peso-extra-input[data-ejidx='${ejIdx}'][data-serieidx='${serieIdx}']`).value) || 0;
+            const repsHoy = parseInt(div.querySelector(`.reps-extra-input[data-ejidx='${ejIdx}'][data-serieidx='${serieIdx}']`).value) || 0;
+
+            sesionHoy.series[serieIdx].peso = pesoHoy;
+            sesionHoy.series[serieIdx].repeticiones = repsHoy;
+
+            guardarSistema();
+        });
+    });
+
+    // --- Toggle agregar serie ---
+    ejerciciosExtra.forEach((ej, ejIdx) => {
+        const btnToggle = document.getElementById(`btn-toggle-agregar-extra-${ejIdx}`);
+        const formDiv = document.getElementById(`agregar-extra-form-${ejIdx}`);
+        btnToggle.addEventListener('click', () => {
+            formDiv.style.display = formDiv.style.display === 'none' ? 'block' : 'none';
+        });
+
+        document.getElementById(`btn-cerrar-extra-form-${ejIdx}`).addEventListener('click', () => {
+            formDiv.style.display = 'none';
+        });
+
+        document.getElementById(`btn-agregar-extra-nueva-${ejIdx}`).addEventListener('click', () => {
+            const peso = parseFloat(document.getElementById(`input-peso-extra-${ejIdx}`).value);
+            const reps = parseInt(document.getElementById(`input-reps-extra-${ejIdx}`).value);
+
+            if (isNaN(peso) || isNaN(reps) || reps < 1) {
+                alert('Completa peso y repeticiones válidos.');
+                return;
+            }
+
+            const hoy = new Date().toISOString().slice(0, 10);
+            let sesionHoy = ej.sesion && ej.sesion.find(s => s.fecha === hoy);
+            if (!sesionHoy) {
+                sesionHoy = new Sesion(hoy);
+                ej.sesion = ej.sesion || [];
+                ej.sesion.push(sesionHoy);
+            }
+
+            sesionHoy.series.push({ peso, repeticiones: reps });
+            guardarSistema();
+
+            document.getElementById(`input-peso-extra-${ejIdx}`).value = '';
+            document.getElementById(`input-reps-extra-${ejIdx}`).value = '';
+            formDiv.style.display = 'none';
+
+            cargarEjerciciosExtra();
+        });
+    });
+}
+
+
