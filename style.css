@@ -121,18 +121,16 @@ h1, h2, h5 {
   right: 0;
   z-index: 1000;
   background-color: #f8f9fa;
-  height: 68px;
-  padding-bottom: 34px;
-  box-sizing: content-box;
+  height: 70px; 
+padding-bottom: env(safe-area-inset-bottom); 
 }
 
 
 #ver-rutinas-tab,
 #ejercicios-tab,
 #rutinas-tab,
-#rutina-activa-tab {
-  height: 68px;  
-  
+#rutina-activa-tab{
+    height:100%;
 }
 
 .card-header {
