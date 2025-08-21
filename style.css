@@ -82,21 +82,22 @@ h1, h2, h5 {
     cursor: pointer;
 }
 
-.table {
-    border-radius: 12px;
-    overflow: hidden;
-    background:transparent;
-    box-shadow: 0 2px 8px rgba(99,102,241,0.07);
-}
 .table th {
-    background: #6366f1;
-    color: #fff;
-    font-weight: 600;
+  font-weight: 600;
+  background-color: #f8f9fa;
 }
-.table td {
-    vertical-align: middle;
-    background: transparent;
+
+.table td, .table th {
+  vertical-align: middle;
+  text-align: center;
 }
+
+input.form-control-sm {
+  max-width: 80px;
+  margin: auto;
+  border-radius: 8px;
+}
+
 
 /* Animación para feedback visual */
 @keyframes fadeIn {
