@@ -470,21 +470,39 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
         }
 
         if (ultimaSesion && ultimaSesion.series && ultimaSesion.series.length > 0) {
-            html += `<table class='table table-sm' id='tabla-series-${ejIdx}'>`;
-            html += `<thead><tr class="text-center"><th>Serie</th><th>Anterior</th><th>Peso</th><th>Reps</th></tr></thead><tbody>`;
+    html += `<div class="card shadow-sm mb-3">`;
+    html += `<div class="card-body">`;
 
-            ultimaSesion.series.forEach((serie, idx) => {
-                html += `<tr class="text-center">`;
-                html += `<td>${idx+1}</td>`;
-                html += `<td>${serie.peso} x ${serie.repeticiones}</td>`;
-               html += `<td><input type="number" inputmode="numeric" pattern="[0-9]*" class="form-control form-control-sm text-center peso-hoy-input" data-ejidx="${ejIdx}" data-serieidx="${idx}" value="${serie.peso}"></td>`;
-                html += `<td><input type="number" inputmode="numeric" pattern="[0-9]*" class="form-control form-control-sm text-center reps-hoy-input" data-ejidx="${ejIdx}" data-serieidx="${idx}" placeholder="Reps hoy"></td>`;
-                html += `</tr>`;
-            });
+    html += `<table class='table table-sm table-borderless align-middle' id='tabla-series-${ejIdx}'>`;
+    html += `<thead class="table-light text-center">
+                <tr>
+                    <th>Serie</th>
+                    <th>Anterior</th>
+                    <th>Peso</th>
+                    <th>Reps</th>
+                </tr>
+             </thead><tbody>`;
 
-            html += `</tbody></table>`;
-            html += `<div class='text-muted small'>Fecha previa: ${ultimaSesion.fecha || 'Sin fecha'}</div>`;
-        }
+    ultimaSesion.series.forEach((serie, idx) => {
+        html += `<tr class="text-center">`;
+        html += `<td>${idx+1}</td>`;
+        html += `<td class="text-muted">${serie.peso} x ${serie.repeticiones}</td>`;
+        html += `<td><input type="number" inputmode="numeric" pattern="[0-9]*" 
+                    class="form-control form-control-sm text-center rounded-3" 
+                    data-ejidx="${ejIdx}" data-serieidx="${idx}" 
+                    value="${serie.peso}"></td>`;
+        html += `<td><input type="number" inputmode="numeric" pattern="[0-9]*" 
+                    class="form-control form-control-sm text-center rounded-3" 
+                    data-ejidx="${ejIdx}" data-serieidx="${idx}" 
+                    placeholder="Reps hoy"></td>`;
+        html += `</tr>`;
+    });
+
+    html += `</tbody></table>`;
+    html += `<div class='text-muted small'>Fecha previa: ${ultimaSesion.fecha || 'Sin fecha'}</div>`;
+    html += `</div></div>`;
+}
+
 
         // Botón y formulario para agregar nueva serie
         html += `<button class='btn btn-outline-primary btn-sm mb-2 w-100' id='btn-toggle-agregar-serie-${ejIdx}'>Agregar serie</button>`;
