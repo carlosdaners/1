@@ -49,7 +49,7 @@ function mostrarLista(filtro = "") {
 
     ejercicios.forEach((ej, idx) => {
         const card = document.createElement("div");
-        card.className = "card mb-3";
+        card.className = "card shadow-sm rounded-3 mb-4";
 
         const cardBody = document.createElement("div");
         cardBody.className = "card-body";
@@ -356,7 +356,7 @@ function mostrarRutinasCreadas() {
     lista.innerHTML = "";
     sistema.rutinas.forEach((r, idx) => {
         const card = document.createElement("div");
-        card.className = "card mb-3";
+        card.className = "card shadow-sm rounded-3 mb-4";
         const cardBody = document.createElement("div");
         cardBody.className = "card-body";
         const cardTitle = document.createElement("h5");
@@ -445,17 +445,17 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
     if (!rutinaActiva) return;
 
     const div = document.getElementById("rutina-activa");
-    let html = `<h2 class='mb-3'>Rutina Activa: ${rutinaActiva.nombre}</h2>`;
+    let html = `<h2 class='mb-3 fs-2 fw-bold'>Rutina Activa: ${rutinaActiva.nombre}</h2>`;
 
     rutinaActiva.ejercicios.forEach((ej, ejIdx) => {
         html += `<div class='mb-3' id='ejercicio-activo-${ejIdx}'>`;
-        html += `<h5>${ej.nombre}</h5>`;
+        html += `<h5 class='fs-4 fw-bold'>${ej.nombre}</h5>`;
 
         // Mostrar notas con botón para borrar
         html += `<ul class="list-group list-group-flush mb-3" id="lista-nota-ejercicio-${ejIdx}">`;
         ej.notas.forEach((nota, idxNota) => {
             html += `
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item d-flex justify-content-between align-items-center small">
                     ${nota}
                     <button class="btn btn-danger btn-sm" id="btn-borrar-nota-${ejIdx}-${idxNota}">x</button>
                 </li>
@@ -769,7 +769,7 @@ btnVolverAsignarRutinaDia.addEventListener("click", () => {
         rutinaHoy.innerHTML = "";
        
         const card = document.createElement("div");
-        card.className = "card mb-3";
+        card.className = "card shadow-sm rounded-3 mb-4";
         const cardHeader = document.createElement("div");
         cardHeader.className = "card-header bg-primary text-white text-center shadow-sm";
         cardHeader.textContent = "Rutina de Hoy";

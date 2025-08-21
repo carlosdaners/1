@@ -58,13 +58,13 @@
                 <div class="mb-3">
                     <h2 class="mb-3 text-center text-primary fw-bold">Ejercicios</h2>
                     <input type="text" id="txt-agregar-ejercicio" class="form-control" placeholder="Nombre del ejercicio" />
-                   <button id="btn-agregar-ejercicio" class="btn btn-primary mt-2 mx-auto d-block w-50">Agregar</button>
+                   <button id="btn-agregar-ejercicio" class="btn btn-primary mt-2 mx-auto d-block w-50 text-white p-2 rounded btn-lg">Agregar</button>
 
                 </div>
 
                 <!--funcionalidad para buscar ejericio-->
                 <div class="mb-3">
-                <button type="button" class="btn btn-primary " id="btn-buscar-ejercicio-ejercicios">
+                <button type="button" class="btn btn-primary w-50 text-white p-2 rounded" id="btn-buscar-ejercicio-ejercicios">
                     <i class="bi bi-search"></i>
                 </button>
                 <input type="text" id="txt-buscar-ejercicio" class="form-control d-none" placeholder="Buscar ejercicio...">
@@ -79,10 +79,10 @@
                 <label>Agregar ejercicio a rutina</label>
                 <input type="text" id="buscar-ejercicio-rutina" class="form-control mt-2" placeholder="Ejercicio" autocomplete="off">
                 <ul id="dropdown-ejercicios" class="list-group position-absolute w-100" style="z-index: 100; display: none;"></ul>
-                <button id="btn-buscar-ejercicio" class="btn btn-primary mt-2 mx-auto d-block w-50">Agregar ejercicio</button>
+                <button id="btn-buscar-ejercicio" class="btn btn-primary mt-2 mx-auto d-block w-50 text-white p-2 rounded btn-lg">Agregar ejercicio</button>
                 <ul id="lista-ejercicio-rutina" class="list-group"></ul>
 
-                <button id="crear-rutina" class="btn btn-primary mt-3 mx-auto d-block w-50">Crear rutina</button>
+                <button id="crear-rutina" class="btn btn-primary mt-3 mx-auto d-block w-50 text-white p-2 rounded btn-lg">Crear rutina</button>
                 <p id="alert-creo-rutina"></p>
             </div>
 
@@ -90,7 +90,7 @@
             <h2 class="mb-3 text-center text-primary fw-bold">Rutinas</h2>
 
             
-                <button class="btn btn-primary mt-2 mx-auto d-block" id="rutinas-por-dia">
+                <button class="btn btn-primary mt-2 mx-auto d-block text-white text-white p-2 rounded btn-lg w-50" id="rutinas-por-dia">
                     Coordinar rutinas por día
                 </button>
             
@@ -98,7 +98,7 @@
                   <ul id="rutina-de-hoy" class="list-group"></ul>
 
                 <!-- Lista de todas las rutinas -->
-                <h5 class="fw-bold mb-2 text-center mt-3">Todas las rutinas</h5>
+                <h5 class="fw-bold mb-2 text-center mt-3 fs-3 fw-bold">Todas las rutinas</h5>
                 <ul id="lista-rutinas-creadas" class="list-group list-group-flush"></ul>
         </div>
 
@@ -120,7 +120,7 @@
             <div class="tab-pane fade mb-3" id="asignacion-rutina-dia-tab">
                 <h3>Asignar rutinas por día</h3>
 
-                <div class="card mb-3">
+                <div class="card shadow-sm rounded-3 mb-4">
                     <div class="card-body d-flex align-items-center">
                         <span class="me-2 fw-bold">Lunes:</span>
                         <select id="rutina-lunes" class="form-select">
@@ -129,7 +129,7 @@
                     </div>
                 </div>
 
-                <div class="card mb-3">
+                <div class="card shadow-sm rounded-3 mb-4">
                     <div class="card-body d-flex align-items-center">
                         <span class="me-2 fw-bold">Martes:</span>
                         <select id="rutina-martes" class="form-select">
@@ -138,7 +138,7 @@
                     </div>
                 </div>
 
-                <div class="card mb-3">
+                <div class="card shadow-sm rounded-3 mb-4">
                     <div class="card-body d-flex align-items-center">
                         <span class="me-2 fw-bold">Miércoles:</span>
                         <select id="rutina-miercoles" class="form-select">
@@ -147,7 +147,7 @@
                     </div>
                 </div>
 
-                <div class="card mb-3">
+                <div class="card shadow-sm rounded-3 mb-4">
                     <div class="card-body d-flex align-items-center">
                         <span class="me-2 fw-bold">Jueves:</span>
                         <select id="rutina-jueves" class="form-select">
@@ -156,7 +156,7 @@
                     </div>
                 </div>
 
-                <div class="card mb-3">
+                <div class="card shadow-sm rounded-3 mb-4">
                     <div class="card-body d-flex align-items-center">
                         <span class="me-2 fw-bold">Viernes:</span>
                         <select id="rutina-viernes" class="form-select">
@@ -165,7 +165,7 @@
                     </div>
                 </div>
 
-                <div class="card mb-3">
+                <div class="card shadow-sm rounded-3 mb-4">
                     <div class="card-body d-flex align-items-center">
                         <span class="me-2 fw-bold">Sábado:</span>
                         <select id="rutina-sabado" class="form-select">
@@ -174,7 +174,7 @@
                     </div>
                 </div>
 
-                <div class="card mb-3">
+                <div class="card shadow-sm rounded-3 mb-4">
                     <div class="card-body d-flex align-items-center">
                         <span class="me-2 fw-bold">Domingo:</span>
                         <select id="rutina-domingo" class="form-select">
