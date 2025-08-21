@@ -3,7 +3,7 @@ import { Rutina } from './dominio/rutina.js';
 import { Sistema } from './dominio/sistema.js';
 import { Sesion } from './dominio/sesion.js';
 
-const btn_agregar_ejercicio = document.getElementById("btn-agregar-ejercicio");
+const btn_agregar_ejercicio_mostrar = document.getElementById("btn-agregar-ejercicio-mostrar");
 const txt_agregarEjercico = document.getElementById("txt-agregar-ejercicio");
 const lista_ejercicios = document.getElementById("exerciseList");
 const btn_agregarEjercicio_rutina = document.getElementById("btn-buscar-ejercicio");
@@ -251,8 +251,22 @@ window.onload = function() {
 };
 
 // ===== Evento para agregar ejercicio =====
-btn_agregar_ejercicio.addEventListener("click", () => {
-    const nomEjercicio = txt_agregarEjercico.value.trim();
+ const btn_agregarEjercicio = document.getElementById("btn-agregar-ejercicio");
+
+btn_agregar_ejercicio_mostrar.addEventListener("click", () => {
+    const txt_agregarEjercico = document.getElementById("txt-agregar-ejercicio");
+    if (txt_agregarEjercico.classList.contains("d-none")) {
+    txt_agregarEjercico.classList.remove("d-none");
+    txt_agregarEjercico.focus();
+    btn_agregarEjercicio.classList.remove("d-none");
+    } else {
+        txt_agregarEjercico.classList.add("d-none");
+        btn_agregarEjercicio.classList.add("d-none");
+    }
+});
+
+btn_agregarEjercicio.addEventListener("click", () => {
+     const nomEjercicio = txt_agregarEjercico.value.trim();
     if (nomEjercicio === "") return;
 
     const nuevoEjercicio = new Ejercicio(nomEjercicio);
@@ -262,6 +276,7 @@ btn_agregar_ejercicio.addEventListener("click", () => {
     mostrarLista();
 
     txt_agregarEjercico.value = "";
+
 });
 
 // Lista temporal de ejercicios para la rutina
@@ -660,21 +675,11 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
 }
 
 // funcionalidad para buscar ejericicio en la pestana ejercicios
-const btnBuscarEjercicio = document.getElementById("btn-buscar-ejercicio-ejercicios");
+
 const txtBuscarEjercicio = document.getElementById("txt-buscar-ejercicio");
-btnBuscarEjercicio.addEventListener("click", () => {
-    if (txtBuscarEjercicio.classList.contains("d-none")) {
-        txtBuscarEjercicio.classList.remove("d-none");
-        txtBuscarEjercicio.focus();
-        txtBuscarEjercicio.addEventListener("input", (e) => {
+txtBuscarEjercicio.addEventListener("input", (e) => {
             mostrarLista(e.target.value);
         });
-    } else {
-        txtBuscarEjercicio.classList.add("d-none");
-        txtBuscarEjercicio.value = "";
-        mostrarLista();
-    }
-});
 
 // funcionalidad de coordinar rutinas por dia
 const btnRutinasPorDia = document.getElementById("rutinas-por-dia");

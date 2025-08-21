@@ -6,6 +6,7 @@
     <title>Gym Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css" />
     <link rel="manifest" href="manifest.json" />
 </head>
@@ -15,38 +16,40 @@
       
 
     <!--nav bar -->
-   <ul class="nav nav-tabs d-flex flex-nowrap justify-content-between text-center w-100"
-    id="myTab"
-    role="tablist">
-    <li class="nav-item flex-fill" role="presentation">
-        <button class="nav-link w-100" id="ver-rutinas-tab" data-bs-toggle="tab" data-bs-target="#ver-rutinas"
-                type="button" role="tab" aria-controls="ver-rutinas" aria-selected="true">
-            Rutinas
-        </button>
-    </li>
-    
-    <li class="nav-item flex-fill" role="presentation">
-        <button class="nav-link w-100 active" id="ejercicios-tab" data-bs-toggle="tab" data-bs-target="#ejercicios"
-                type="button" role="tab" aria-controls="ejercicios" aria-selected="false">
-            Ejercicios
-        </button>
-    </li>
-    
-    <li class="nav-item flex-fill" role="presentation">
-        <button class="nav-link w-100" id="rutinas-tab" data-bs-toggle="tab" data-bs-target="#rutinas"
-                type="button" role="tab" aria-controls="rutinas" aria-selected="false">
-            Crear
-        </button>
-    </li>
+  <ul class="nav nav-tabs d-flex flex-nowrap justify-content-between text-center w-100" id="myTab" role="tablist">
+  <li class="nav-item flex-fill" role="presentation">
+    <button class="nav-link w-100" id="ver-rutinas-tab" data-bs-toggle="tab" data-bs-target="#ver-rutinas"
+            type="button" role="tab" aria-controls="ver-rutinas" aria-selected="true">
+      <i class="bi bi-clipboard-check fs-5 d-block"></i>
+      Rutinas
+    </button>
+  </li>
 
-    <li class="nav-item flex-fill" role="presentation">
-        <button class="nav-link w-100" id="rutina-activa-tab" data-bs-toggle="tab" data-bs-target="#rutina-activa"
-                type="button" role="tab" aria-controls="rutina-activa" aria-selected="false">
-            Activa
-        </button>
-    </li>
+  <li class="nav-item flex-fill" role="presentation">
+    <button class="nav-link w-100 active" id="ejercicios-tab" data-bs-toggle="tab" data-bs-target="#ejercicios"
+            type="button" role="tab" aria-controls="ejercicios" aria-selected="false">
+      <i class="fas fa-dumbbell fs-5 d-block"></i>
+      Ejercicios
+    </button>
+  </li>
 
-    </ul>
+  <li class="nav-item flex-fill" role="presentation">
+    <button class="nav-link w-100" id="rutinas-tab" data-bs-toggle="tab" data-bs-target="#rutinas"
+            type="button" role="tab" aria-controls="rutinas" aria-selected="false">
+      <i class="bi bi-plus-circle fs-5 d-block"></i>
+      Crear
+    </button>
+  </li>
+
+  <li class="nav-item flex-fill" role="presentation">
+    <button class="nav-link w-100" id="rutina-activa-tab" data-bs-toggle="tab" data-bs-target="#rutina-activa"
+            type="button" role="tab" aria-controls="rutina-activa" aria-selected="false">
+      <i class="bi bi-check-circle fs-5 d-block"></i>
+      Activa
+    </button>
+  </li>
+</ul>
+
 
 
 
@@ -55,26 +58,19 @@
         <div class="tab-content mt-3" id="myTabContent">
             <div class="tab-pane fade show active" id="ejercicios" role="tabpanel" aria-labelledby="ejercicios-tab">
                 
-                <div class="mb-3">
-                    <h2 class="mb-3 text-center text-primary fw-bold">Ejercicios</h2>
-                    <input type="text" id="txt-agregar-ejercicio" class="form-control" placeholder="Nombre del ejercicio" />
-                   <button id="btn-agregar-ejercicio" class="btn btn-primary mt-2 mx-auto d-block w-50 text-white p-2 rounded btn-lg">Agregar</button>
+                <div class="mb-3 mt-2">
+                    <input type="text" id="txt-buscar-ejercicio" class="form-control shadow-sm mb-3" placeholder="🔍 Buscar ejercicio">
 
+                   <button id="btn-agregar-ejercicio-mostrar" class="btn btn-primary mt-2 mx-auto d-block w-50 text-white p-2 rounded btn-lg mb-2">Agregar</button>
+                   <input type="text" id="txt-agregar-ejercicio" class="form-control d-none" placeholder="Nombre del ejercicio" />
+                   <button id="btn-agregar-ejercicio" class="btn btn-primary mt-2 mx-auto d-block w-50 text-white p-2 rounded btn-lg d-none">Agregar ejercicio</button>
                 </div>
 
-                <!--funcionalidad para buscar ejericio-->
-                <div class="mb-3">
-                <button type="button" class="btn btn-primary w-50 text-white p-2 rounded" id="btn-buscar-ejercicio-ejercicios">
-                    <i class="bi bi-search"></i>
-                </button>
-                <input type="text" id="txt-buscar-ejercicio" class="form-control d-none" placeholder="Buscar ejercicio...">
-                </div>
-                
                 <ul id="exerciseList" class="list-group"></ul>
             </div>
 
             <div class="tab-pane fade mb-3" id="rutinas" role="tabpanel" aria-labelledby="rutinas-tab">
-                <h2 class="mb-3 text-center text-primary fw-bold">Crear Rutina</h2>
+                <h2 class="mb-3 text-primary fw-bold">Crear Rutina</h2>
                 <input type="text" id="nombre-rutina" class="form-control mt-2" placeholder="Nombre Rutina">
                 <label>Agregar ejercicio a rutina</label>
                 <input type="text" id="buscar-ejercicio-rutina" class="form-control mt-2" placeholder="Ejercicio" autocomplete="off">
@@ -87,10 +83,10 @@
             </div>
 
         <div class="tab-pane fade mb-3" id="ver-rutinas" role="tabpanel" aria-labelledby="ver-rutinas-tab">
-            <h2 class="mb-3 text-center text-primary fw-bold">Rutinas</h2>
+            <h2 class="mb-3 text-primary fw-bold">Rutinas</h2>
 
             
-                <button class="btn btn-primary mt-2 mx-auto d-block text-white text-white p-2 rounded btn-lg w-50" id="rutinas-por-dia">
+                <button class="btn btn-primary mt-2 mx-auto d-block text-white text-white p-2 rounded btn-lg w-50 mb-3" id="rutinas-por-dia">
                     Coordinar rutinas por día
                 </button>
             
