@@ -92,6 +92,10 @@ h1, h2, h5 {
   text-align: center;
 }
 
+.table td {
+    height: 50px;
+}
+
 input.form-control-sm {
   max-width: 80px;
   margin: auto;

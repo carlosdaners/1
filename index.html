@@ -61,7 +61,9 @@
                 <div class="mb-3 mt-2">
                     <input type="text" id="txt-buscar-ejercicio" class="form-control shadow-sm mb-3" placeholder="🔍 Buscar ejercicio">
 
-                   <button id="btn-agregar-ejercicio-mostrar" class="btn btn-primary mt-2 mx-auto d-block w-50 text-white p-2 rounded btn-lg mb-2">Agregar</button>
+                   <button id="btn-agregar-ejercicio-mostrar" class="btn btn-primary mt-2 mx-auto d-block w-50 text-white p-2 rounded btn-lg mb-2">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Agregar</button>
                    <input type="text" id="txt-agregar-ejercicio" class="form-control d-none" placeholder="Nombre del ejercicio" />
                    <button id="btn-agregar-ejercicio" class="btn btn-primary mt-2 mx-auto d-block w-50 text-white p-2 rounded btn-lg d-none">Agregar ejercicio</button>
                 </div>
@@ -69,8 +71,8 @@
                 <ul id="exerciseList" class="list-group"></ul>
             </div>
 
-            <div class="tab-pane fade mb-3" id="rutinas" role="tabpanel" aria-labelledby="rutinas-tab">
-                <h2 class="mb-3 text-primary fw-bold">Crear Rutina</h2>
+            <div class="tab-pane fade mb-3 mt-3" id="rutinas" role="tabpanel" aria-labelledby="rutinas-tab">
+                
                 <input type="text" id="nombre-rutina" class="form-control mt-2" placeholder="Nombre Rutina">
                 <label>Agregar ejercicio a rutina</label>
                 <input type="text" id="buscar-ejercicio-rutina" class="form-control mt-2" placeholder="Ejercicio" autocomplete="off">
@@ -82,20 +84,26 @@
                 <p id="alert-creo-rutina"></p>
             </div>
 
-        <div class="tab-pane fade mb-3" id="ver-rutinas" role="tabpanel" aria-labelledby="ver-rutinas-tab">
-            <h2 class="mb-3 text-primary fw-bold">Rutinas</h2>
-
-            
-                <button class="btn btn-primary mt-2 mx-auto d-block text-white text-white p-2 rounded btn-lg w-50 mb-3" id="rutinas-por-dia">
-                    Coordinar rutinas por día
-                </button>
-            
+        <div class="tab-pane fade mb-3 mt-3" id="ver-rutinas" role="tabpanel" aria-labelledby="ver-rutinas-tab">
+           
                 <!-- Rutina de hoy -->
                   <ul id="rutina-de-hoy" class="list-group"></ul>
+                  
 
                 <!-- Lista de todas las rutinas -->
-                <h5 class="fw-bold mb-2 text-center mt-3 fs-3 fw-bold">Todas las rutinas</h5>
-                <ul id="lista-rutinas-creadas" class="list-group list-group-flush"></ul>
+                <div class="mb-4">
+                    <h3 class="fs-4 fw-semibold text-dark text-center mt-4">
+                    <i class="bi bi-list-check me-2"></i> Todas las rutinas
+                    </h3>
+                        <hr class="border border-dark border-1 opacity-25 mb-3">
+
+                    <ul id="lista-rutinas-creadas" class="list-unstyled"></ul>
+                </div>
+
+                <!--Btn para coordinar rutinas por dia-->
+                <button class="btn btn-success btn-lg d-block mx-auto px-4 py-3 mb-3" id="rutinas-por-dia">
+                  <i class="bi bi-calendar-check me-2"></i> Coordinar rutinas por día
+                </button>
         </div>
 
 
@@ -106,8 +114,7 @@
                 <button class="btn btn-primary mt-3" id="comenzar-rutina">Comenzar rutina</button>
             </div>
 
-            <div class="tab-pane fade mb-3 " id="rutina-activa" role="tabpanel" aria-labelledby="rutina-activa-tab">
-                <h2 class="mb-3 text-center text-primary fw-bold">Rutina Activa</h2>
+            <div class="tab-pane fade mb-3 mt-3" id="rutina-activa" role="tabpanel" aria-labelledby="rutina-activa-tab">
                 <p>No hay una rutina activa</p>
 
             

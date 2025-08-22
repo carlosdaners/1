@@ -794,11 +794,11 @@ btnVolverAsignarRutinaDia.addEventListener("click", () => {
         const card = document.createElement("div");
         card.className = "card shadow-sm rounded-3 mb-4";
         const cardHeader = document.createElement("div");
-        cardHeader.className = "card-header bg-primary text-white text-center shadow-sm";
+        cardHeader.className = "card-header bg-primary text-white text-center shadow-sm p-3 fw-bold fs-5";
         cardHeader.textContent = "Rutina de Hoy";
         card.appendChild(cardHeader);
         const cardBody = document.createElement("div");
-        cardBody.className = "card-body text-center";
+        cardBody.className = "card-body text-center p-4 shadow-sm";
         const cardTitle = document.createElement("h5");
         cardTitle.className = "card-title";
         cardTitle.textContent = rutina.nombre;
