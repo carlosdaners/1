@@ -86,5 +86,22 @@ export class Sistema {
             }
     }
 
+    borrarRutina (nomRutina) {
+        const dias = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
+        for (const dia of dias) {
+            if (this[dia] && this[dia].rutina && this[dia].rutina.nombre === nomRutina) {
+                this.rutina = null;
+            }
+        }
+
+        for (let i = 0; i < this.rutinas.length; i++) {
+        if (this.rutinas[i].nombre === nomRutina) {
+            this.rutinas.splice(i, 1); 
+            break;
+        }
+        
+    }
+    }
+
     
 }

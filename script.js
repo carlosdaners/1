@@ -236,8 +236,6 @@ function verificarLocalStorage() {
 window.onload = function() {
     if (!verificarLocalStorage()) return;
     
-    const verRutinasTab = document.getElementById("ver-rutinas-tab");
-    verRutinasTab.classList.add("active");
     document.getElementById("ver-rutinas").classList.add("show", "active");
     document.getElementById("ejercicios-tab").classList.remove("active");
     document.getElementById("ejercicios").classList.remove("show", "active");
@@ -397,6 +395,17 @@ function mostrarRutinasCreadas() {
             document.getElementById("detalle-rutina-nombre").textContent = r.nombre;
             const ul = document.getElementById("detalle-rutina-ejercicios");
             ul.innerHTML = "";
+             // borrar rutina
+            const btn_borrar_rutina = document.getElementById("borrar-rutina");
+            btn_borrar_rutina.addEventListener("click", () => {
+                sistema.borrarRutina(r.nombre);
+                guardarSistema();
+                ocultarTodo();
+                cargarSistema();
+                document.getElementById("ver-rutinas").classList.add("show", "active");
+                mostrarRutinasCreadas();
+                cargarRutinaDeHoy(rutinaDeHoy()); 
+            });
             r.ejercicios.forEach(ej => {
                 const li = document.createElement("li");
                 li.className = "list-group-item";
@@ -465,7 +474,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
 
     rutinaActiva.ejercicios.forEach((ej, ejIdx) => {
         html += `<div class='mb-3' id='ejercicio-activo-${ejIdx}'>`;
-        html += `<h5 class='fs-4 fw-bold'>${ej.nombre}</h5>`;
+        html += `<h6 class='fs-4 fw-bold'>${ej.nombre}</h6>`;
 
         // Mostrar notas con botón para borrar
         html += `<ul class="list-group list-group-flush mb-3" id="lista-nota-ejercicio-${ejIdx}">`;
@@ -490,7 +499,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
     html += `<div class="card-body">`;
 
     html += `<table class='table table-sm table-borderless align-middle' id='tabla-series-${ejIdx}'>`;
-    html += `<thead class="table-light text-center">
+    html += `<thead class="text-center">
                 <tr>
                     <th>Serie</th>
                     <th>Anterior</th>
@@ -502,7 +511,7 @@ function mostrarRutinaActiva(destacarEjIdx = null) {
     ultimaSesion.series.forEach((serie, idx) => {
         html += `<tr class="text-center">`;
         html += `<td>${idx+1}</td>`;
-        html += `<td class="text-muted">${serie.peso} x ${serie.repeticiones}</td>`;
+        html += `<td >${serie.peso} x ${serie.repeticiones}</td>`;
         html += `<td><input type="number" inputmode="numeric" pattern="[0-9]*" 
                     class="form-control form-control-sm text-center rounded-3" 
                     data-ejidx="${ejIdx}" data-serieidx="${idx}" 
@@ -786,16 +795,13 @@ btnVolverAsignarRutinaDia.addEventListener("click", () => {
             rutinaHoy.innerHTML ="";
             return;
         };
-     
-        console.log("-----------------------");
-        console.log(rutina);  
-       
+    
         rutinaHoy.innerHTML = "";
        
         const card = document.createElement("div");
         card.className = "card shadow-sm rounded-3 mb-4";
         const cardHeader = document.createElement("div");
-        cardHeader.className = "card-header bg-primary text-white text-center shadow-sm p-3 fw-bold fs-5";
+        cardHeader.className = "card-header text-white text-center shadow-sm p-3 fw-bold fs-5";
         cardHeader.textContent = "Rutina de Hoy";
         card.appendChild(cardHeader);
         const cardBody = document.createElement("div");
@@ -818,6 +824,18 @@ btnVolverAsignarRutinaDia.addEventListener("click", () => {
             document.getElementById("ver-rutinas-tab").classList.remove("active");
             document.getElementById("detalle-rutina-nombre").textContent = rutina.nombre;
             const ul = document.getElementById("detalle-rutina-ejercicios");
+            // borrar rutina
+            const btn_borrar_rutina = document.getElementById("borrar-rutina");
+            btn_borrar_rutina.addEventListener("click", () => {
+                sistema.borrarRutina(rutina.nombre);
+                guardarSistema();
+                ocultarTodo();
+                cargarSistema();
+                document.getElementById("ver-rutinas").classList.add("show", "active");
+                mostrarRutinasCreadas();
+                cargarRutinaDeHoy(rutinaDeHoy());
+                
+            });
             ul.innerHTML = "";
             rutina.ejercicios.forEach(ej => {
                 const li = document.createElement("li");
@@ -847,7 +865,7 @@ btnVolverAsignarRutinaDia.addEventListener("click", () => {
 
     ejerciciosExtra.forEach((ej, ejIdx) => {
         html += `<div class='mb-3' id='ejercicio-extra-${ejIdx}'>`;
-        html += `<h6>${ej.nombre}</h6>`;
+        html += `<h6 class='fs-4 fw-bold'>${ej.nombre}</h6>`;
 
         // Notas
         html += `<ul class="list-group list-group-flush mb-3" id="lista-nota-extra-${ejIdx}">`;
@@ -868,19 +886,29 @@ btnVolverAsignarRutinaDia.addEventListener("click", () => {
         }
 
         if (ultimaSesion && ultimaSesion.series && ultimaSesion.series.length > 0) {
-            html += `<table class='table table-sm'><thead><tr class="text-center"><th>Serie</th><th>Anterior</th><th>Peso</th><th>Reps</th></tr></thead><tbody>`;
+             html += `<div class="card shadow-sm mb-3">`;
+             html += `<div class="card-body">`;
+            html += `<table class='table table-sm table-borderless align-middle'><thead><tr class="text-center"><th>Serie</th><th>Anterior</th><th>Peso</th><th>Reps</th></tr></thead><tbody>`;
 
-            ultimaSesion.series.forEach((serie, idx) => {
-                html += `<tr class="text-center">`;
-                html += `<td>${idx + 1}</td>`;
-                html += `<td>${serie.peso} x ${serie.repeticiones}</td>`;
-                html += `<td><input type="number" inputmode="numeric" class="form-control form-control-sm text-center peso-extra-input" data-ejidx="${ejIdx}" data-serieidx="${idx}" value="${serie.peso}"></td>`;
-                html += `<td><input type="number" inputmode="numeric" class="form-control form-control-sm text-center reps-extra-input" data-ejidx="${ejIdx}" data-serieidx="${idx}" placeholder="Reps hoy"></td>`;
-                html += `</tr>`;
-            });
+           ultimaSesion.series.forEach((serie, idx) => {
+    html += `<tr class="text-center">`;
+    html += `<td>${idx + 1}</td>`;
+    html += `<td>${serie.peso} x ${serie.repeticiones}</td>`;
+    html += `<td><input type="number" inputmode="numeric" pattern="[0-9]*" 
+                class="form-control form-control-sm text-center rounded-3" 
+                data-ejidx="${ejIdx}" data-serieidx="${idx}" 
+                value="${serie.peso}"></td>`;
+    html += `<td><input type="number" inputmode="numeric" pattern="[0-9]*" 
+                class="form-control form-control-sm text-center rounded-3" 
+                data-ejidx="${ejIdx}" data-serieidx="${idx}" 
+                placeholder="Reps hoy"></td>`;
+    html += `</tr>`;
+});
+
 
             html += `</tbody></table>`;
             html += `<div class='text-muted small'>Fecha previa: ${ultimaSesion.fecha || 'Sin fecha'}</div>`;
+            html += `</div></div>`;
         }
 
         // Botón y formulario para agregar serie

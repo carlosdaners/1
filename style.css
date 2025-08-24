@@ -1,107 +1,134 @@
 /* Gym Tracker - Estilos personalizados para una experiencia moderna y atractiva */
 
 body {
-    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+    background-color: #000000; /* fondo negro puro */
+    color: #ffffff; /* texto blanco */
     min-height: 100vh;
+    font-family: 'Montserrat', Arial, sans-serif;
 }
 
 h1, h2, h5 {
-    font-family: 'Montserrat', Arial, sans-serif;
     font-weight: 700;
-    color: #3b3b3b;
+    color: #ffffff;
 }
 
 .nav-tabs {
-    border-bottom: 2px solid #6366f1;
+    border-bottom: 2px solid #ffffff;
+    background-color: #1a1a1a;
 }
+
 .nav-tabs .nav-link.active {
-    background: #6366f1;
-    color: #fff !important;
+    background-color: #444444; /* gris medio */
+    color: #ffffff !important;
     border-radius: 8px 8px 0 0;
     font-weight: 600;
 }
+
 .nav-tabs .nav-link {
-    color: #6366f1;
+    color: #cccccc;
     font-weight: 500;
     transition: background 0.2s;
 }
+
 .nav-tabs .nav-link:hover {
-    background: #e0e7ff;
+    background-color: #333333;
 }
 
 .card {
+    background-color: #2a2a2a; /* gris medio */
     border-radius: 16px;
-    box-shadow: 0 4px 16px rgba(99,102,241,0.08);
+    box-shadow: 0 4px 16px rgba(255,255,255,0.05);
     border: none;
     transition: box-shadow 0.2s;
+    color: #ffffff;
 }
+
 .card:hover {
-    box-shadow: 0 8px 32px rgba(99,102,241,0.18);
+    box-shadow: 0 8px 32px rgba(255,255,255,0.1);
 }
 
 .btn-primary, .btn-success {
-    background: linear-gradient(90deg, #6366f1 60%, #60a5fa 100%);
+    background-color: #444444;
     border: none;
     font-weight: 600;
-    box-shadow: 0 2px 8px rgba(99,102,241,0.10);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(255,255,255,0.1);
     transition: background 0.2s;
 }
+
 .btn-primary:hover, .btn-success:hover {
-    background: linear-gradient(90deg, #60a5fa 0%, #6366f1 100%);
+    background-color: #666666;
 }
 
 .btn-outline-primary {
-    border-color: #6366f1;
-    color: #6366f1;
+    border-color: #ffffff;
+    color: #ffffff;
     font-weight: 500;
 }
+
 .btn-outline-primary:hover {
-    background: #6366f1;
-    color: #fff;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 .input-group .form-control {
     border-radius: 8px;
-    border: 1px solid #c7d2fe;
+    border: 1px solid #444444;
+    background-color: #1a1a1a;
+    color: #ffffff;
 }
+
 .form-control:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 2px #6366f133;
+    border-color: #ffffff;
+    box-shadow: 0 0 0 2px #ffffff33;
 }
 
 .list-group-item {
     border-radius: 8px;
     margin-bottom: 6px;
-    border: 1px solid #e0e7ff;
-    background: #fff;
+    border: 1px solid #444444;
+    background-color: #2a2a2a;
+    color: #ffffff;
     font-size: 1.05em;
     transition: box-shadow 0.2s;
 }
+
 .list-group-item-action:hover {
-    background: #e0e7ff;
+    background-color: #333333;
     cursor: pointer;
 }
 
-.table th {
-  font-weight: 600;
-  background-color: #f8f9fa;
+.table {
+    background-color: #2a2a2a;
+    color: #ffffff;
 }
 
-.table td, .table th {
-  vertical-align: middle;
-  text-align: center;
+.table th {
+    font-weight: 600;
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.table td, .table th{
+    vertical-align: middle;
+    text-align: center;
+    border-color: #444444;
 }
 
 .table td {
     height: 50px;
+    background-color: #2a2a2a; 
+    color: #ffffff;
 }
 
 input.form-control-sm {
-  max-width: 80px;
-  margin: auto;
-  border-radius: 8px;
+    max-width: 80px;
+    margin: auto;
+    border-radius: 8px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #444444;
 }
-
 
 /* Animación para feedback visual */
 @keyframes fadeIn {
@@ -120,25 +147,32 @@ input.form-control-sm {
 }
 
 #myTab {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background-color: #f8f9fa;
-  height: 70px; 
-padding-bottom: env(safe-area-inset-bottom); 
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #1a1a1a;
+    height: 70px;
+    padding-bottom: env(safe-area-inset-bottom);
 }
-
 
 #ver-rutinas-tab,
 #ejercicios-tab,
 #rutinas-tab,
-#rutina-activa-tab{
-    height:100%;
+#rutina-activa-tab {
+    height: 100%;
+    color: #ffffff;
 }
 
 .card-header {
-    background: linear-gradient(90deg, #60a5fa 0%, #6366f1 100%);
-    color: white;
+    background-color: #444444;
+    color: #ffffff;
 }
+
+.table input::placeholder {
+  color: #ffffff;
+  opacity: 1;
+}
+
+
